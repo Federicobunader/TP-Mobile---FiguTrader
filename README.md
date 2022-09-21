@@ -1,0 +1,2 @@
+# FiguTrader
+Figu Trader
