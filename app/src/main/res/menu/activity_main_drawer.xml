@@ -7,14 +7,18 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="Menu Principal" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_album"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="Album" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_scanner"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="Scanear" />
+        <item
+            android:id="@+id/nav_cerrar_sesion"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Cerrar Sesion" />
     </group>
 </menu>
