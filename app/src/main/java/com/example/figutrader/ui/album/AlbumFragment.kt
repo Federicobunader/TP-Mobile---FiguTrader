@@ -1,4 +1,4 @@
-package com.example.figutrader.ui.gallery
+package com.example.figutrader.ui.album
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.figutrader.databinding.FragmentGalleryBinding
+import com.example.figutrader.databinding.FragmentAlbumBinding
 
-class GalleryFragment : Fragment() {
+class AlbumFragment : Fragment() {
 
-    private var _binding: FragmentGalleryBinding? = null
+    private var _binding: FragmentAlbumBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class GalleryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
+        val albumViewModel =
+            ViewModelProvider(this).get(AlbumViewModel::class.java)
 
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _binding = FragmentAlbumBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        galleryViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textAlbum
+        albumViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
