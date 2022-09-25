@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_login">
+    app:startDestination="@id/nav_login">
 
     <fragment
         android:id="@+id/nav_menu_principal"
@@ -26,4 +26,9 @@
             android:id="@+id/action_nav_login_to_nav_menu_principal"
             app:destination="@id/nav_menu_principal" />
     </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.figutrader.MainActivity"
+        android:label="app_bar_main"
+        tools:layout="@layout/app_bar_main" />
 </navigation>
