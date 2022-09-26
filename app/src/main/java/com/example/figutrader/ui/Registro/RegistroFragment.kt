@@ -1,4 +1,4 @@
-package com.example.figutrader.ui.login
+package com.example.figutrader.ui.registro
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.figutrader.databinding.FragmentLoginBinding
+import com.example.figutrader.databinding.FragmentRegistrarseBinding
+import com.example.figutrader.ui.registro.RegistroViewModel
 
-class LoginFragment : Fragment() {
+class RegistroFragment : Fragment() {
 
-    private var _binding: FragmentLoginBinding? = null
+    private var _binding: FragmentRegistrarseBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,9 +24,9 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val registroViewModel =
-            ViewModelProvider(this).get(LoginViewModel::class.java)
+            ViewModelProvider(this).get(RegistroViewModel::class.java)
 
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentRegistrarseBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textView2
