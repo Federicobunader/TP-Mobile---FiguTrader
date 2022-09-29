@@ -2,6 +2,7 @@ package com.example.figutrader
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Button
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -32,11 +33,15 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_login, R.id.nav_menu_principal, R.id.nav_album
+                R.id.nav_menu_principal, R.id.nav_album
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -48,5 +53,12 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun onClickSignup(view: android.view.View) {
+        val buttonSignup = findViewById<Button>(R.id.buttonSignup)
+        buttonSignup.setOnClickListener {
+//            Send to signup fragment
+        }
     }
 }

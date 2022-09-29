@@ -19,15 +19,15 @@
 
     <fragment
         android:id="@+id/nav_login"
-        android:name="com.example.figutrader.ui.registro.RegistroFragment"
+        android:name="com.example.figutrader.ui.login.LoginFragment"
         android:label="@string/menu_login"
         tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_nav_login_to_nav_menu_principal"
-            app:destination="@id/action_nav_login_to_nav_menu_principal" />
-        <action
-            android:id="@+id/action_nav_login_to_nav_registrarse"
-            app:destination="@id/action_nav_login_to_nav_registrarse" />
+<!--        <action-->
+<!--            android:id="@+id/action_nav_login_to_nav_menu_principal"-->
+<!--            app:destination="@id/action_nav_login_to_nav_menu_principal" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_nav_login_to_nav_registrarse"-->
+<!--            app:destination="@id/action_nav_login_to_nav_registrarse" />-->
     </fragment>
     <activity
         android:id="@+id/mainActivity"
