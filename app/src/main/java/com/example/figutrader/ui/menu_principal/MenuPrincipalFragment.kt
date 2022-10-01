@@ -42,7 +42,7 @@ class MenuPrincipalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.camButton.setOnClickListener {
-            findNavController().navigate(R.id.nav_registro)
+            findNavController().navigate(R.id.nav_scan)
         }
     }
 
