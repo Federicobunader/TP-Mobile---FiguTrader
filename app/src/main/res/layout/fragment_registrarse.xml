@@ -40,10 +40,10 @@
         android:layout_height="0dp"
         android:layout_marginBottom="53dp"
         android:ems="10"
-        android:hint="Contraseña"
+        android:hint="Confirmar contraseña"
         android:inputType="textPassword"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSignup"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSignup2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputPasswordLogin" />
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
-        android:id="@+id/buttonSignup"
+        android:id="@+id/buttonSignup2"
         android:layout_width="173dp"
         android:layout_height="0dp"
         android:layout_marginBottom="236dp"

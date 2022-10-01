@@ -38,10 +38,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        if (supportActionBar != null) {
-            supportActionBar!!.hide()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -55,10 +51,4 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun onClickSignup(view: android.view.View) {
-        val buttonSignup = findViewById<Button>(R.id.buttonSignup)
-        buttonSignup.setOnClickListener {
-//            Send to signup fragment
-        }
-    }
 }

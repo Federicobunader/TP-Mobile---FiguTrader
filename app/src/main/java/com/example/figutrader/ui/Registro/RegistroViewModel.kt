@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class RegistroViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
+        value = "FiguTrader"
     }
     val text: LiveData<String> = _text
 }
