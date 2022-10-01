@@ -36,6 +36,12 @@
         android:label="@string/menu_registrarse"
         tools:layout="@layout/fragment_registrarse" />
 
+    <fragment
+        android:id="@+id/nav_scan"
+        android:name="com.example.figutrader.ui.scan.ScanFragment"
+        android:label="@string/menu_scan"
+        tools:layout="@layout/fragment_scan" />
+
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.figutrader.MainActivity"

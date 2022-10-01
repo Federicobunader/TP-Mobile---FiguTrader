@@ -14,7 +14,7 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Album" />
         <item
-            android:id="@+id/itemNav_escanear"
+            android:id="@+id/nav_scan"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Escanear" />
         <item
