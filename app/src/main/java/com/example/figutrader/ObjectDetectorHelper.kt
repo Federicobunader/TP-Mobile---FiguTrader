@@ -105,6 +105,7 @@ class ObjectDetectorHelper(
 
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
+        //TODO revisar esta parte de modelName
         val modelName =
             when (currentModel) {
                 MODEL_MOBILENETV1 -> "mobilenetv1.tflite"
