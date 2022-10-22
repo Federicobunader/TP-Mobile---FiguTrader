@@ -15,6 +15,7 @@ import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
 import com.auth0.android.result.Credentials
+import com.auth0.android.result.UserProfile
 import com.example.figutrader.MainActivity
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentLoginBinding
@@ -22,24 +23,40 @@ import com.example.figutrader.databinding.FragmentLoginBinding
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
-    private var mainBinding: MainActivity?= null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    val account = Auth0("OisvgmujDA8VxbbBdvbI1h7itTe2OgjD", "dev-1v0y0xnrlbzoiled.us.auth0.com")
-    val authenticationApi = AuthenticationAPIClient(account)
+    var cachedCredentials: Credentials? = null
+    var cachedUserProfile: UserProfile? = null
+    var account: Auth0? = null
+
+    val userProfileCallBack = object : Callback<UserProfile, AuthenticationException> {
+        override fun onFailure(exception: AuthenticationException) {
+            Log.e("userProfileCallBack",exception.getDescription())
+        }
+
+        override fun onSuccess(userProfile: UserProfile) {
+            cachedUserProfile = userProfile
+            Log.i("userProfileCallBack", userProfile.getId() + " - mail" + userProfile.email)
+        }
+    }
+
     val loginCallback = object : Callback<Credentials, AuthenticationException> {
         override fun onFailure(exception: AuthenticationException) {
-            Log.e("leonE",exception.getDescription())
+            Log.e("leonE", exception.getDescription())
             findNavController().navigate(R.id.nav_login)
         }
 
         override fun onSuccess(credentials: Credentials) {
-            mainBinding?.cachedCredentials = credentials
+            cachedCredentials = credentials
             findNavController().navigate(R.id.nav_menu_principal)
 
+            val client = AuthenticationAPIClient(account!!)
+            client
+                .userInfo(cachedCredentials!!.accessToken!!)
+                .start(userProfileCallBack)
         }
     }
 
@@ -59,6 +76,10 @@ class LoginFragment : Fragment() {
             textView.text = it
         }
 
+        account = (activity as MainActivity).account
+        cachedCredentials = (activity as MainActivity).cachedCredentials
+        cachedUserProfile = (activity as MainActivity).cachedUserProfile
+
         return root
     }
 
@@ -77,7 +98,7 @@ class LoginFragment : Fragment() {
         binding.buttonLogin.setOnClickListener {
             val password = view.findViewById<EditText>(R.id.inputPasswordLogin).text.toString()
             val username = view.findViewById<EditText>(R.id.inputUserLogin).text.toString()
-            authenticationApi
+            val client = AuthenticationAPIClient(account!!)
                 .login(username,password,"Username-Password-Authentication")
                 .validateClaims()
                 .start(loginCallback)

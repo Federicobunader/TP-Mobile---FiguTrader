@@ -28,27 +28,4 @@ class Session(cntx: Context?) {
         prefs = PreferenceManager.getDefaultSharedPreferences(cntx)
     }
 
-    private fun showUserProfile() {
-        // Guard against showing the profile when no user is logged in
-        if (mainBinding?.cachedCredentials == null) {
-            return
-        }
-
-        val client = AuthenticationAPIClient(mainBinding!!.account)
-        client
-            .userInfo(mainBinding!!.cachedCredentials!!.accessToken!!)
-            .start(object : Callback<UserProfile, AuthenticationException> {
-
-                fun onFailure(exception: AuthenticationException) {
-                    showSnackBar(getString(
-                        R.string.general_failure_with_exception_code,
-                        exception.getCode()))
-                }
-
-                fun onSuccess(profile: UserProfile) {
-                    mainBinding?.cachedUserProfile = profile
-                }
-
-            })
-    }
 }

@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.figutrader.MainActivity
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentMenuPrincipalBinding
 
@@ -27,6 +28,7 @@ class MenuPrincipalFragment : Fragment() {
 
         _binding = FragmentMenuPrincipalBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        binding.editTextTextPersonName2.text = "Album de Fede"//(activity as MainActivity).cachedUserProfile!!.name
 
         return root
     }

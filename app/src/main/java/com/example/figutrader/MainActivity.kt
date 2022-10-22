@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    lateinit var account: Auth0
+    var account = Auth0("OisvgmujDA8VxbbBdvbI1h7itTe2OgjD", "dev-1v0y0xnrlbzoiled.us.auth0.com")
     var cachedCredentials: Credentials? = null
     var cachedUserProfile: UserProfile? = null
 
