@@ -15,12 +15,14 @@ import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
 import com.auth0.android.result.Credentials
+import com.example.figutrader.MainActivity
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
+    private var mainBinding: MainActivity?= null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,7 +37,9 @@ class LoginFragment : Fragment() {
         }
 
         override fun onSuccess(credentials: Credentials) {
+            mainBinding?.cachedCredentials = credentials
             findNavController().navigate(R.id.nav_menu_principal)
+
         }
     }
 

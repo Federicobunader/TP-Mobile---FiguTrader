@@ -113,7 +113,7 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                             bitmapBuffer = Bitmap.createBitmap(
                                 image.width,
                                 image.height,
-                                Bitmap.Config.ALPHA_8
+                                Bitmap.Config.ARGB_8888
                             )
                         }
 

@@ -10,12 +10,19 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.auth0.android.Auth0
+import com.auth0.android.result.Credentials
+import com.auth0.android.result.UserProfile
 import com.example.figutrader.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    lateinit var account: Auth0
+    var cachedCredentials: Credentials? = null
+    var cachedUserProfile: UserProfile? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
