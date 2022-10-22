@@ -1,12 +1,12 @@
 package com.example.figutrader.ui.scan
 
+//import androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888
 import android.Manifest
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.StrictMode
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,12 +20,17 @@ import com.example.figutrader.databinding.FragmentScanBinding
 import com.example.figutrader.ui.camera.CameraHandler
 import org.tensorflow.lite.examples.objectdetection.ObjectDetectorHelper
 import org.tensorflow.lite.task.gms.vision.detector.Detection
+import java.nio.ByteBuffer
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
-    private lateinit var binding: FragmentScanBinding
+    private var _binding: FragmentScanBinding? = null
+
+    private val binding
+        get() = _binding!!
+
     private lateinit var objectDetectorHelper: ObjectDetectorHelper
     private lateinit var bitmapBuffer: Bitmap
     private var preview: Preview? = null
@@ -34,8 +39,16 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var cameraExecutor: ExecutorService
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+
+        // Shut down our background executor
+        cameraExecutor.shutdown()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentScanBinding.inflate(inflater, container, false)
+        _binding = FragmentScanBinding.inflate(inflater, container, false)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
@@ -100,7 +113,7 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                             bitmapBuffer = Bitmap.createBitmap(
                                 image.width,
                                 image.height,
-                                Bitmap.Config.ARGB_8888
+                                Bitmap.Config.ALPHA_8
                             )
                         }
 
