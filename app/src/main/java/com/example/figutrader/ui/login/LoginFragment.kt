@@ -19,6 +19,7 @@ import com.auth0.android.result.UserProfile
 import com.example.figutrader.MainActivity
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentLoginBinding
+import com.example.figutrader.ui.menu_principal.MenuPrincipalFragment
 
 class LoginFragment : Fragment() {
 
@@ -31,6 +32,7 @@ class LoginFragment : Fragment() {
     var cachedCredentials: Credentials? = null
     var cachedUserProfile: UserProfile? = null
     var account: Auth0? = null
+    val menuPrincipalFragment = MenuPrincipalFragment()
 
     val userProfileCallBack = object : Callback<UserProfile, AuthenticationException> {
         override fun onFailure(exception: AuthenticationException) {
@@ -39,7 +41,8 @@ class LoginFragment : Fragment() {
 
         override fun onSuccess(userProfile: UserProfile) {
             cachedUserProfile = userProfile
-            Log.i("userProfileCallBack", userProfile.getId() + " - mail" + userProfile.email)
+            menuPrincipalFragment.setUsername(userProfile.name);
+            Log.i("userProfileCallBack LOGIN", userProfile.getId() + " - mail" + userProfile.email + " - nombre " + userProfile.name)
         }
     }
 

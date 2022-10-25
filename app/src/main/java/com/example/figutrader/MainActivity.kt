@@ -1,19 +1,24 @@
 package com.example.figutrader
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.auth0.android.Auth0
+import com.auth0.android.authentication.AuthenticationException
+import com.auth0.android.callback.Callback
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
 import com.example.figutrader.databinding.ActivityMainBinding
+import com.example.figutrader.ui.menu_principal.MenuPrincipalFragment
+import com.example.figutrader.ui.menu_principal.MenuPrincipalViewModel
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,10 +32,36 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        val userProfileCallBack = object : Callback<UserProfile, AuthenticationException> {
+            override fun onFailure(exception: AuthenticationException) {
+                Log.e("userProfileCallBack",exception.getDescription())
+            }
+
+            override fun onSuccess(userProfile: UserProfile) {
+                cachedUserProfile = userProfile
+                Log.i("userProfileCallBack  Activity", userProfile.getId() + " - mail" + userProfile.email + " - nombre" + userProfile.nickname)
+            }
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
+
+        val mFragmentManager = supportFragmentManager
+        val mFragmentTransaction = mFragmentManager.beginTransaction()
+
+
+        val bundle = Bundle()
+        bundle.putString("username", cachedUserProfile?.name)
+        bundle.putString("usermail", cachedUserProfile?.name)
+
+       // cachedUserProfile?.name?.let { Log.i("Username en activity", it) }
+       // menuPrincipalFragment.setUsername(cachedUserProfile?.name);
+
+
+        //mFragmentTransaction.add(binding.navView,menuPrincipalFragment).commit();
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
