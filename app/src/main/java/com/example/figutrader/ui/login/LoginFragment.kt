@@ -20,6 +20,7 @@ import com.example.figutrader.MainActivity
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentLoginBinding
 import com.example.figutrader.ui.menu_principal.MenuPrincipalFragment
+import com.example.figutrader.ui.menu_principal.MenuPrincipalViewModel
 
 class LoginFragment : Fragment() {
 
@@ -29,59 +30,14 @@ class LoginFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    var cachedCredentials: Credentials? = null
-    var cachedUserProfile: UserProfile? = null
-    var account: Auth0? = null
-    val menuPrincipalFragment = MenuPrincipalFragment()
-
-    val userProfileCallBack = object : Callback<UserProfile, AuthenticationException> {
-        override fun onFailure(exception: AuthenticationException) {
-            Log.e("userProfileCallBack",exception.getDescription())
-        }
-
-        override fun onSuccess(userProfile: UserProfile) {
-            cachedUserProfile = userProfile
-            menuPrincipalFragment.setUsername(userProfile.name);
-            Log.i("userProfileCallBack LOGIN", userProfile.getId() + " - mail" + userProfile.email + " - nombre " + userProfile.name)
-        }
-    }
-
-    val loginCallback = object : Callback<Credentials, AuthenticationException> {
-        override fun onFailure(exception: AuthenticationException) {
-            Log.e("leonE", exception.getDescription())
-            findNavController().navigate(R.id.nav_login)
-        }
-
-        override fun onSuccess(credentials: Credentials) {
-            cachedCredentials = credentials
-            findNavController().navigate(R.id.nav_menu_principal)
-
-            val client = AuthenticationAPIClient(account!!)
-            client
-                .userInfo(cachedCredentials!!.accessToken!!)
-                .start(userProfileCallBack)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val registroViewModel =
-            ViewModelProvider(this).get(LoginViewModel::class.java)
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textView2
-        registroViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-
-        account = (activity as MainActivity).account
-        cachedCredentials = (activity as MainActivity).cachedCredentials
-        cachedUserProfile = (activity as MainActivity).cachedUserProfile
 
         return root
     }
@@ -97,6 +53,53 @@ class LoginFragment : Fragment() {
         binding.buttonSignup.setOnClickListener {
             findNavController().navigate(R.id.nav_registro)
         }
+
+        var cachedCredentials: Credentials? = null
+        var cachedUserProfile: UserProfile? = null
+        var account: Auth0? = null
+
+        val registroViewModel =
+            ViewModelProvider(this).get(LoginViewModel::class.java)
+
+        val menuPrincipalViewModel =
+            ViewModelProvider(requireActivity()).get(MenuPrincipalViewModel::class.java)
+
+        val userProfileCallBack = object : Callback<UserProfile, AuthenticationException> {
+            override fun onFailure(exception: AuthenticationException) {
+                Log.e("userProfileCallBack",exception.getDescription())
+            }
+
+            override fun onSuccess(userProfile: UserProfile) {
+                cachedUserProfile = userProfile
+                menuPrincipalViewModel.setUsername(userProfile.name);
+            }
+        }
+
+        val loginCallback = object : Callback<Credentials, AuthenticationException> {
+            override fun onFailure(exception: AuthenticationException) {
+                Log.e("leonE", exception.getDescription())
+                findNavController().navigate(R.id.nav_login)
+            }
+
+            override fun onSuccess(credentials: Credentials) {
+                cachedCredentials = credentials
+                findNavController().navigate(R.id.nav_menu_principal)
+
+                val client = AuthenticationAPIClient(account!!)
+                client
+                    .userInfo(cachedCredentials!!.accessToken!!)
+                    .start(userProfileCallBack)
+            }
+        }
+
+        val textView: TextView = binding.textView2
+        registroViewModel.text.observe(viewLifecycleOwner) {
+            textView.text = it
+        }
+
+        account = (activity as MainActivity).account
+        cachedCredentials = (activity as MainActivity).cachedCredentials
+        cachedUserProfile = (activity as MainActivity).cachedUserProfile
 
         binding.buttonLogin.setOnClickListener {
             val password = view.findViewById<EditText>(R.id.inputPasswordLogin).text.toString()
