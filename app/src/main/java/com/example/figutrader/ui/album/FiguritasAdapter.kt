@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figutrader.R
@@ -31,6 +32,13 @@ class FiguritasAdapter(private val myDataset: MutableList<Figurita>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.view.findViewById<TextView>(R.id.figurita_nombre).text = myDataset[position].nombre
+        if(!myDataset[position].esPais) {
+            holder.view.findViewById<TextView>(R.id.figurita_cantidad).text =
+                myDataset[position].cantidad.toString()
+            if(myDataset[position].cantidad == 0) {
+                holder.view.findViewById<TextView>(R.id.figurita_nombre).setBackgroundResource(R.color.gris_figurita)
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {

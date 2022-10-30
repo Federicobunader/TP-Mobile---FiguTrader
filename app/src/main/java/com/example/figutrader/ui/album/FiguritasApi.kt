@@ -13,9 +13,9 @@ class FiguritasApi {
                 continue
             }
             if (i < 11)
-                dataset.add(Figurita(i, "BRA $i", 0, "Brasil", false))
+                dataset.add(Figurita(i, "BRA $i", (0..5).random(), "Brasil", false))
             else
-                dataset.add(Figurita(i, "ARG " + (i-11), 0, "Argentina", false))
+                dataset.add(Figurita(i, "ARG " + (i-11), (0..5).random(), "Argentina", false))
         }
         return dataset
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,12 +8,29 @@
 
     <TextView
         android:id="@+id/figurita_nombre"
-        android:layout_width="320dp"
-        android:layout_height="320dp"
+        android:layout_width="match_parent"
+        android:layout_height="1000px"
         android:layout_weight="1"
+        android:gravity="center"
         android:text="Fede"
         android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="50px" />
+        android:textFontWeight="900"
+        android:textSize="50px"
+        android:background="@color/verde_figurita"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/figurita_cantidad"
+        android:layout_width="70px"
+        android:layout_height="70px"
+        android:layout_weight="1"
+        android:background="#fff"
+        android:gravity="center"
+        android:text="0"
+        android:textAlignment="center"
+        android:textSize="50px"
+        android:shadowColor="#000000"
+        android:shadowRadius="5"
+        android:shadowDy="2"
+        android:shadowDx="2" />
+
+</RelativeLayout>
