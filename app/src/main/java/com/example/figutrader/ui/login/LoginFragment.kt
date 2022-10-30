@@ -71,7 +71,7 @@ class LoginFragment : Fragment() {
 
             override fun onSuccess(userProfile: UserProfile) {
                 cachedUserProfile = userProfile
-                menuPrincipalViewModel.setUsername(userProfile.name);
+                menuPrincipalViewModel.setUsername(userProfile.nickname);
             }
         }
 
