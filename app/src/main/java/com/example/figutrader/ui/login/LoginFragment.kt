@@ -71,13 +71,13 @@ class LoginFragment : Fragment() {
 
             override fun onSuccess(userProfile: UserProfile) {
                 cachedUserProfile = userProfile
-                menuPrincipalViewModel.setUsername(userProfile.nickname);
+                menuPrincipalViewModel.setUsername(userProfile.name);
+                menuPrincipalViewModel.setUserId(userProfile.getId())
             }
         }
 
         val loginCallback = object : Callback<Credentials, AuthenticationException> {
             override fun onFailure(exception: AuthenticationException) {
-                Log.e("leonE", exception.getDescription())
                 findNavController().navigate(R.id.nav_login)
             }
 

@@ -37,14 +37,14 @@ class AlbumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val myDataset = FiguritasApi().getFiguritas()
+//        val myDataset = FiguritasApi().getFiguritas()
 
         val viewManager = LinearLayoutManager(this.context)
-        val viewAdapter = FiguritasAdapter(myDataset)
+//        val viewAdapter = FiguritasAdapter(myDataset)
 
         recyclerView = binding.myRecyclerView.apply {
             layoutManager = viewManager
-            adapter = viewAdapter
+//            adapter = viewAdapter
         }
     }
 
