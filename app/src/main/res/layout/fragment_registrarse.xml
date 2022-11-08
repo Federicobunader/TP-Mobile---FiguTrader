@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.registro.RegistroFragment">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="222dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="77dp"
         android:layout_marginBottom="57dp"
         android:text="FiguTrader"
@@ -23,7 +31,7 @@
     <EditText
         android:id="@+id/inputPasswordSignup"
         android:layout_width="216dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:ems="10"
         android:hint="Contraseña"
@@ -37,7 +45,7 @@
     <EditText
         android:id="@+id/inputConfirmPasswordSignup"
         android:layout_width="216dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="49dp"
         android:ems="10"
         android:hint="Confirmar contraseña"
@@ -51,7 +59,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputUsernameSignup"
         android:layout_width="216dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:hint="Usuario"
         android:textAlignment="center"
@@ -63,7 +71,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEmailSignup"
         android:layout_width="216dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:hint="Email"
         android:textAlignment="center"
@@ -75,7 +83,7 @@
     <Button
         android:id="@+id/buttonSignup2"
         android:layout_width="173dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="164dp"
         android:text="Registrarse"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,3 +92,4 @@
         app:layout_constraintTop_toBottomOf="@+id/inputConfirmPasswordSignup" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
