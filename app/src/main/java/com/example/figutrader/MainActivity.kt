@@ -38,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val userProfileCallBack = object : Callback<UserProfile, AuthenticationException> {
             override fun onFailure(exception: AuthenticationException) {
@@ -49,9 +51,6 @@ class MainActivity : AppCompatActivity() {
                 Log.i("userProfileCallBack  Activity", userProfile.getId() + " - mail" + userProfile.email + " - nombre" + userProfile.nickname)
             }
         }
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
