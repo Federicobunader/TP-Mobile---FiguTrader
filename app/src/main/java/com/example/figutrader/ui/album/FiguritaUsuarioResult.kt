@@ -10,5 +10,5 @@ data class FiguritaUsuarioResult(
     @SerializedName("figuId")
     val figuId : Int,
     @SerializedName("usuarioId")
-    val usuarioId : Int
+    val usuarioId : String
 )

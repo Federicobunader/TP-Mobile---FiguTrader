@@ -13,6 +13,7 @@ import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentMenuPrincipalBinding
 import com.example.figutrader.ui.album.AlbumClient
 import com.example.figutrader.ui.album.FiguritaResult
+import com.example.figutrader.ui.album.FiguritaUsuarioResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,12 +25,7 @@ class MenuPrincipalFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
-    private var userId: String? = "hola"
-
-    fun setUserId(id: String?) {
-        this.userId = id
-    }
+    private var userId: String? = "userId"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,9 +37,10 @@ class MenuPrincipalFragment : Fragment() {
 
         _binding = FragmentMenuPrincipalBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val textView: TextView = binding.editTextTextPersonName2
+        val albumName: TextView = binding.editTextTextPersonName2
         val progressBar = binding.progressBar
         var progressTextView = binding.progressTextView
+        var totalTextView = binding.totalTextView
 
         val albumCall = AlbumClient.service.getAlbum()
         albumCall.enqueue(object : Callback<List<FiguritaResult>> {
@@ -51,9 +48,8 @@ class MenuPrincipalFragment : Fragment() {
                 if (response.isSuccessful) {
                     val body = response.body()
                     Log.v("retrofit", "call successful ${body?.size}")
-                    progressBar.max = body?.size ?: 0
-                    progressBar.progress = 10
-                    progressTextView.text = "10/${body?.size}"
+                    progressBar.max = body?.size ?: 200
+                    totalTextView.text = "${body?.size}"
                 }
                 else
                     Log.v("retrofit", "call is not successful")
@@ -64,45 +60,33 @@ class MenuPrincipalFragment : Fragment() {
             }
         })
 
-
-
-        /*
         menuPrincipalViewModel.userIdData.observe(viewLifecycleOwner) {
-            val service = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://635ef291ed25a0b5fe4fbaeb.mockapi.io/")
-                .build()
-                .create(FiguritaService::class.java)
+            Log.v("MenuPrincipalUserId", "$it")
 
-            val call = it?.let { it1 -> service.getFiguritas(it1.drop(6).first().toString()) }
-
-            call?.enqueue(object : Callback<List<FiguritaResponse>> {
-                override fun onResponse(call: Call<List<FiguritaResponse>>?, response: Response<List<FiguritaResponse>>?) {
-                    Log.e("test", response?.code().toString())
-                    if (response?.code() == 200) {
-                        val figuritaResponse = response.body()!!
-
-                        val stringBuilder = "Country: " + figuritaResponse[0].categoria!!
-
-                        Log.e("test", stringBuilder)
+            val albumUsuarioCall = AlbumClient.service.getAlbumUsuario(it.toString())
+            albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
+                override fun onResponse(call: Call<List<FiguritaUsuarioResult>>?, response: Response<List<FiguritaUsuarioResult>>) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        Log.v("retrofit", "call successful ${body?.size}")
+                        progressBar.progress = body?.size ?: 0
+                        progressTextView.text = "${body?.size}"
                     }
+                    else
+                        Log.v("retrofit", "call is not successful")
                 }
 
-                override fun onFailure(call: Call<List<FiguritaResponse>>?, t: Throwable?) {
+                override fun onFailure(call: Call<List<FiguritaUsuarioResult>>, t: Throwable) {
                     Log.v("retrofit", "call failed")
                 }
             })
         }
 
         menuPrincipalViewModel.userNameData.observe(viewLifecycleOwner) {
-            Log.e("test", "entre al observer2")
-            textView.text = it
+            Log.v("MenuPrincipalUserName", "$it")
+            albumName.text = it
         }
 
-
-        userId?.let { Log.e("test", it) }
-
-*/
         return root
     }
 
@@ -112,13 +96,10 @@ class MenuPrincipalFragment : Fragment() {
         binding.camButton.setOnClickListener {
             findNavController().navigate(R.id.nav_scan)
         }
-
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
