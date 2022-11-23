@@ -1,6 +1,7 @@
 package com.example.figutrader.ui.album
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,21 +31,30 @@ class AlbumFragment : Fragment() {
 
         _binding = FragmentAlbumBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val myDataset = FiguritasApi().getFiguritas()
+        Log.v("AlbumFragment", "${AlbumDataset.album?.size}")
+        val albumDataset : List<FiguritaDataView> = AlbumDataset.album
+            ?.map {
+                    figu -> FiguritaDataView(
+                        figu.descripcion,
+                AlbumDataset.albumUsuario?.find { it.figuId == figu.figuId }?.cantidad ?: 0,
+                        figu.categoria,
+                        figu.figuId
+                    )
+            }
+            ?: emptyList()
 
         val viewManager = LinearLayoutManager(this.context)
-//        val viewAdapter = FiguritasAdapter(myDataset)
+        val viewAdapter = FiguritasAdapter(albumDataset)
 
         recyclerView = binding.myRecyclerView.apply {
             layoutManager = viewManager
-//            adapter = viewAdapter
+            adapter = viewAdapter
         }
     }
 

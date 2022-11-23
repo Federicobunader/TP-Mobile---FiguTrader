@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentMenuPrincipalBinding
-import com.example.figutrader.ui.album.AlbumClient
-import com.example.figutrader.ui.album.FiguritaResult
-import com.example.figutrader.ui.album.FiguritaUsuarioResult
+import com.example.figutrader.ui.album.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,6 +48,7 @@ class MenuPrincipalFragment : Fragment() {
                     Log.v("retrofit", "call successful ${body?.size}")
                     progressBar.max = body?.size ?: 200
                     totalTextView.text = "${body?.size}"
+                    AlbumDataset.album = body
                 }
                 else
                     Log.v("retrofit", "call is not successful")
@@ -71,6 +70,7 @@ class MenuPrincipalFragment : Fragment() {
                         Log.v("retrofit", "call successful ${body?.size}")
                         progressBar.progress = body?.size ?: 0
                         progressTextView.text = "${body?.size}"
+                        AlbumDataset.albumUsuario = body
                     }
                     else
                         Log.v("retrofit", "call is not successful")

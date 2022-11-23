@@ -16,15 +16,7 @@ import com.auth0.android.callback.Callback
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
 import com.example.figutrader.databinding.ActivityMainBinding
-import com.example.figutrader.ui.album.Figurita
-import com.example.figutrader.ui.album.FiguritaService
-import com.example.figutrader.ui.menu_principal.MenuPrincipalFragment
-import com.example.figutrader.ui.menu_principal.MenuPrincipalViewModel
 import com.google.android.material.navigation.NavigationView
-import retrofit2.Call
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
