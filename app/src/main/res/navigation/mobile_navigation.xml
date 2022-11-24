@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_album" />
 
     <fragment
+        android:id="@+id/nav_edicion_figurita"
+        android:name="com.example.figutrader.ui.edicion_figurita.EdicionFiguritaFragment"
+        android:label="Edicion Figurita"
+        tools:layout="@layout/fragment_edicion_figu" />
+
+    <fragment
         android:id="@+id/nav_login"
         android:name="com.example.figutrader.ui.login.LoginFragment"
         android:label="@string/menu_login"

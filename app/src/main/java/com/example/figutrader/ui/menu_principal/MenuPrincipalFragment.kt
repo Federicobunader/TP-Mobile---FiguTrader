@@ -53,7 +53,6 @@ class MenuPrincipalFragment : Fragment() {
                 else
                     Log.v("retrofit", "call is not successful")
             }
-
             override fun onFailure(call: Call<List<FiguritaResult>>, t: Throwable) {
                 Log.v("retrofit", "call failed")
             }

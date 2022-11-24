@@ -19,7 +19,7 @@
         android:background="@color/verde_figurita"/>
 
     <TextView
-        android:id="@+id/figurita_cantidad"
+        android:id="@+id/CantidadTextView"
         android:layout_width="70px"
         android:layout_height="70px"
         android:layout_weight="1"

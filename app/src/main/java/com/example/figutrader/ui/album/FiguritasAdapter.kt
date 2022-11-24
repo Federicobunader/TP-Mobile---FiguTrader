@@ -8,7 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figutrader.R
 
-class FiguritasAdapter(var myDataset: List<FiguritaDataView>) :
+interface FiguClickedListener {
+    fun onFiguClicked(figurita: FiguritaDataView)
+}
+
+class FiguritasAdapter(var myDataset: List<FiguritaDataView>, val figuClickedListener: FiguClickedListener) :
     RecyclerView.Adapter<FiguritasAdapter.MyViewHolder>() {
     private val VIEWTYPE_COUNTRY: Int = 1
     private val VIEWTYPE_FIGURITA: Int = 2
@@ -33,7 +37,7 @@ class FiguritasAdapter(var myDataset: List<FiguritaDataView>) :
         holder.view.findViewById<TextView>(R.id.figurita_nombre).text =
             myDataset[position].descripcion
 
-        holder.view.findViewById<TextView>(R.id.figurita_cantidad).text =
+        holder.view.findViewById<TextView>(R.id.CantidadTextView).text =
             myDataset[position].cantidad.toString()
 
         Log.v("FiguritasAdapter", "${myDataset[position].cantidad}")
@@ -47,6 +51,8 @@ class FiguritasAdapter(var myDataset: List<FiguritaDataView>) :
             holder.view.findViewById<TextView>(R.id.figurita_nombre)
                 .setBackgroundResource(R.color.verde_figurita)
         }
+
+        holder.itemView.setOnClickListener{ figuClickedListener.onFiguClicked(myDataset[position])}
     }
 
     override fun getItemViewType(position: Int): Int {
