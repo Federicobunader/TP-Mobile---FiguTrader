@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object AlbumClient {
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl("http://10.0.2.2:4000/api/")
+        .baseUrl("https://figutrader-api.onrender.com/api/")
         .build()
 
     val service = retrofit.create(IAlbumService::class.java)

@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figutrader.databinding.FragmentEdicionFiguBinding
@@ -32,10 +34,20 @@ class EdicionFiguritaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val edicionFiguritaViewModel = ViewModelProvider(this).get(EdicionFiguritaViewModel::class.java)
+        val edicionFiguritaViewModel = ViewModelProvider(requireActivity()).get(EdicionFiguritaViewModel::class.java)
 
         _binding = FragmentEdicionFiguBinding.inflate(inflater, container, false)
+
+        val cantidadText: TextView = binding.CantidadTextView
+        val nombreText: TextView = binding.figuritaNombre
+
         val root: View = binding.root
+
+        edicionFiguritaViewModel.figuritasData.observe(viewLifecycleOwner) {
+            cantidadText.text = it.cantidad.toString()
+            nombreText.text = it.descripcion
+        }
+
         return root
     }
 

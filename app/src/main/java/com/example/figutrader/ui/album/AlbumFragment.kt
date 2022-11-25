@@ -1,6 +1,5 @@
 package com.example.figutrader.ui.album
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +14,8 @@ import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentAlbumBinding
 import com.example.figutrader.databinding.FragmentEdicionFiguBinding
 import com.example.figutrader.ui.edicion_figurita.EdicionFiguritaFragment
+import com.example.figutrader.ui.edicion_figurita.EdicionFiguritaViewModel
+import java.lang.Thread.sleep
 
 class AlbumFragment : Fragment() {
 
@@ -55,11 +56,12 @@ class AlbumFragment : Fragment() {
                     )
             }
             ?: emptyList()
+        val edicionFiguritaViewModel = ViewModelProvider(requireActivity()).get(EdicionFiguritaViewModel::class.java)
 
         val viewManager = LinearLayoutManager(this.context)
         val viewAdapter = FiguritasAdapter(albumDataset, object : FiguClickedListener{
             override fun onFiguClicked(figurita: FiguritaDataView) {
-                _edicionFiguBinding?.setFiguritaActual(figurita)
+                edicionFiguritaViewModel.setFigurita(figurita)
                 findNavController().navigate(R.id.nav_edicion_figurita)
             }
         })

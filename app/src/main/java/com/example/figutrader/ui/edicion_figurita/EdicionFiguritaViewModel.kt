@@ -1,13 +1,15 @@
 package com.example.figutrader.ui.edicion_figurita
 
-import androidx.lifecycle.LiveData
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.figutrader.ui.album.FiguritaDataView
 
-class EdicionFiguritaViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+class EdicionFiguritaViewModel() : ViewModel() {
+    var figuritasData = MutableLiveData<FiguritaDataView>()
+
+    fun setFigurita(figurita: FiguritaDataView?) {
+        figuritasData.value = figurita!!
     }
-    val text: LiveData<String> = _text
 }
