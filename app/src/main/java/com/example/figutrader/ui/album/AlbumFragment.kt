@@ -62,6 +62,7 @@ class AlbumFragment : Fragment() {
         val viewAdapter = FiguritasAdapter(albumDataset, object : FiguClickedListener{
             override fun onFiguClicked(figurita: FiguritaDataView) {
                 edicionFiguritaViewModel.setFigurita(figurita)
+                edicionFiguritaViewModel.setUserId(figurita.usuarioId)
                 findNavController().navigate(R.id.nav_edicion_figurita)
             }
         })
