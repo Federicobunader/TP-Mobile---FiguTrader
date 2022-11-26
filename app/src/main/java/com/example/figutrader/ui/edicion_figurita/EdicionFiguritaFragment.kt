@@ -5,13 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.auth0.android.authentication.AuthenticationAPIClient
+import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentEdicionFiguBinding
-import com.example.figutrader.ui.album.FiguritaDataView
+import com.example.figutrader.ui.album.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class EdicionFiguritaFragment : Fragment() {
 
@@ -34,46 +40,56 @@ class EdicionFiguritaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val edicionFiguritaViewModel = ViewModelProvider(requireActivity()).get(EdicionFiguritaViewModel::class.java)
 
         _binding = FragmentEdicionFiguBinding.inflate(inflater, container, false)
-
-        val cantidadText: TextView = binding.CantidadTextView
-        val nombreText: TextView = binding.figuritaNombre
-
         val root: View = binding.root
-
-        edicionFiguritaViewModel.figuritasData.observe(viewLifecycleOwner) {
-            cantidadText.text = it.cantidad.toString()
-            nombreText.text = it.descripcion
-        }
 
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val edicionFiguritaViewModel = ViewModelProvider(requireActivity()).get(EdicionFiguritaViewModel::class.java)
+
         Log.v("EdicionFiguritaFragment", "${figuritaActual?.descripcion}")
-/*
-        Log.v("AlbumFragment", "${AlbumDataset.album?.size}")
-        val albumDataset : List<FiguritaDataView> = AlbumDataset.album
-            ?.map {
-                    figu -> FiguritaDataView(
-                        figu.descripcion,
-                AlbumDataset.albumUsuario?.find { it.figuId == figu.figuId }?.cantidad ?: 0,
-                        figu.categoria,
-                        figu.figuId
-                    )
-            }
-            ?: emptyList()
+        val cantidadText: TextView = binding.CantidadTextView
+        val nombreText: TextView = binding.figuritaNombre
+        val nuevaCantidadText: TextView = binding.NuevaCantidadText
 
-        val viewManager = LinearLayoutManager(this.context)
-        val viewAdapter = FiguritasAdapter(albumDataset)
+        edicionFiguritaViewModel.figuritasData.observe(viewLifecycleOwner) {
+            cantidadText.text = it.cantidad.toString()
+            nombreText.text = it.descripcion
+            figuritaActual = it
+        }
 
-        recyclerView = binding.myRecyclerView.apply {
-            layoutManager = viewManager
-            adapter = viewAdapter
-        }*/
+        binding.GuardarCantidadButton.setOnClickListener {
+            val nuevaCantidad : String = view.findViewById<EditText>(R.id.NuevaCantidadText).text.toString()
+            Log.v("EdicionFiguritaFragment", "Click Boton cantidad")
+
+            val figuData = FiguritaUsuarioData(nuevaCantidad.toInt(), figuritaActual?.figuId ?: 0)
+            val albumUsuarioCall = AlbumClient.service.addFigurita(figuritaActual?.usuarioId ?: "migue", figuData)
+
+            Log.v("EdicionFiguritaFragment", "UsuarioId: ${figuritaActual?.usuarioId ?: "migue"} FiguId: ${figuData.figuId}, cantidad: ${figuData.cantidad}")
+
+            albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
+                override fun onResponse(call: Call<List<FiguritaUsuarioResult>>?, response: Response<List<FiguritaUsuarioResult>>) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        Log.v("retrofit", "call POST successful ${body?.size}")
+                        nuevaCantidadText.text = ""
+                        cantidadText.text = figuData.cantidad.toString()
+                    }
+                    else
+                        Log.v("retrofit", "call POST is not successful")
+                }
+
+                override fun onFailure(call: Call<List<FiguritaUsuarioResult>>, t: Throwable) {
+                    Log.v("retrofit", "call POST failed")
+                }
+            })
+        }
     }
 
     override fun onDestroyView() {

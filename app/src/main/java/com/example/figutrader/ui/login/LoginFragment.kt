@@ -78,6 +78,7 @@ class LoginFragment : Fragment() {
 
         val loginCallback = object : Callback<Credentials, AuthenticationException> {
             override fun onFailure(exception: AuthenticationException) {
+                Log.v("LoginFragment", "ERROR Login ${exception.message}")
                 findNavController().navigate(R.id.nav_login)
             }
 
@@ -104,6 +105,7 @@ class LoginFragment : Fragment() {
         binding.buttonLogin.setOnClickListener {
             val password = view.findViewById<EditText>(R.id.inputPasswordLogin).text.toString()
             val username = view.findViewById<EditText>(R.id.inputUserLogin).text.toString()
+            Log.v("LoginFragment", "Loguea")
             val client = AuthenticationAPIClient(account!!)
                 .login(username,password,"Username-Password-Authentication")
                 .validateClaims()

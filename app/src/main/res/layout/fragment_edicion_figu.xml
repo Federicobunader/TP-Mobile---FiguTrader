@@ -48,8 +48,8 @@
         android:layout_marginEnd="56dp"
         android:layout_marginBottom="40dp"
         android:ems="10"
+        android:hint="Ingrese nueva cantidad"
         android:inputType="number"
-        android:text="Ingrese nueva cantidad"
         app:layout_constraintBottom_toTopOf="@+id/GuardarCantidadButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
