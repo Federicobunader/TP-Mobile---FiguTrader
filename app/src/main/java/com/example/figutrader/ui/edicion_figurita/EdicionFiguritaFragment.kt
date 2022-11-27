@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import com.auth0.android.authentication.AuthenticationAPIClient
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentEdicionFiguBinding
 import com.example.figutrader.ui.album.*
@@ -24,17 +21,10 @@ class EdicionFiguritaFragment : Fragment() {
 
     private var _binding: FragmentEdicionFiguBinding? = null
 
-    private lateinit var recyclerView: RecyclerView
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
     private var figuritaActual :FiguritaDataView? = null
-
-    public fun setFiguritaActual(figuritaDataView: FiguritaDataView){
-        figuritaActual = figuritaDataView
-        Log.v("EdicionFiguritaFragment", figuritaDataView.descripcion)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +44,6 @@ class EdicionFiguritaFragment : Fragment() {
 
         val edicionFiguritaViewModel = ViewModelProvider(requireActivity()).get(EdicionFiguritaViewModel::class.java)
 
-        Log.v("EdicionFiguritaFragment", "${figuritaActual?.descripcion}")
         val cantidadText: TextView = binding.CantidadTextView
         val nombreText: TextView = binding.figuritaNombre
         val nuevaCantidadText: TextView = binding.NuevaCantidadText
@@ -67,26 +56,19 @@ class EdicionFiguritaFragment : Fragment() {
 
         binding.GuardarCantidadButton.setOnClickListener {
             val nuevaCantidad : String = view.findViewById<EditText>(R.id.NuevaCantidadText).text.toString()
-            Log.v("EdicionFiguritaFragment", "Click Boton cantidad")
 
             if(nuevaCantidad != "") {
 
                 val figuData =
-                    FiguritaUsuarioData(nuevaCantidad?.toInt(), figuritaActual?.figuId ?: 0)
-                var tokenUsuario: String?
+                    FiguritaUsuarioData(nuevaCantidad.toInt(), figuritaActual?.figuId ?: 0)
 
-                if (figuritaActual?.usuarioId != "") {
-                    tokenUsuario = figuritaActual?.usuarioId
+                val tokenUsuario: String? = if (figuritaActual?.usuarioId != "") {
+                    figuritaActual?.usuarioId
                 } else {
-                    tokenUsuario = User.userID
+                    User.userID
                 }
 
                 val albumUsuarioCall = AlbumClient.service.addFigurita(tokenUsuario!!, figuData)
-
-                Log.v(
-                    "EdicionFiguritaFragment",
-                    "UsuarioId: ${figuritaActual?.usuarioId ?: "migue"} FiguId: ${figuData.figuId}, cantidad: ${figuData.cantidad}"
-                )
 
                 albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
                     override fun onResponse(
@@ -94,13 +76,9 @@ class EdicionFiguritaFragment : Fragment() {
                         response: Response<List<FiguritaUsuarioResult>>
                     ) {
                         if (response.isSuccessful) {
-                            val body = response.body()
-                            Log.v("retrofit", "call POST successful ${body?.size}")
                             nuevaCantidadText.text = ""
                             cantidadText.text = figuData.cantidad.toString()
-                        } else
-                            Log.i("Response", response.body().toString())
-                        Log.v("retrofit", "call POST is not successful")
+                        }
                     }
 
                     override fun onFailure(call: Call<List<FiguritaUsuarioResult>>, t: Throwable) {

@@ -19,7 +19,6 @@ import com.auth0.android.result.UserProfile
 import com.example.figutrader.MainActivity
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentLoginBinding
-import com.example.figutrader.ui.menu_principal.MenuPrincipalFragment
 import com.example.figutrader.ui.menu_principal.MenuPrincipalViewModel
 
 class LoginFragment : Fragment() {
@@ -55,7 +54,6 @@ class LoginFragment : Fragment() {
         }
 
         var cachedCredentials: Credentials? = null
-        var cachedUserProfile: UserProfile? = null
         var account: Auth0? = null
 
         val registroViewModel =
@@ -70,7 +68,6 @@ class LoginFragment : Fragment() {
             }
 
             override fun onSuccess(userProfile: UserProfile) {
-                cachedUserProfile = userProfile
                 menuPrincipalViewModel.setUsername(userProfile.name);
                 menuPrincipalViewModel.setUserId(userProfile.getId())
                 User.userID = userProfile.getId()
@@ -79,7 +76,6 @@ class LoginFragment : Fragment() {
 
         val loginCallback = object : Callback<Credentials, AuthenticationException> {
             override fun onFailure(exception: AuthenticationException) {
-                Log.v("LoginFragment", "ERROR Login ${exception.message}")
                 findNavController().navigate(R.id.nav_login)
             }
 
@@ -101,12 +97,10 @@ class LoginFragment : Fragment() {
 
         account = (activity as MainActivity).account
         cachedCredentials = (activity as MainActivity).cachedCredentials
-        cachedUserProfile = (activity as MainActivity).cachedUserProfile
 
         binding.buttonLogin.setOnClickListener {
             val password = view.findViewById<EditText>(R.id.inputPasswordLogin).text.toString()
             val username = view.findViewById<EditText>(R.id.inputUserLogin).text.toString()
-            Log.v("LoginFragment", "Loguea")
             val client = AuthenticationAPIClient(account!!)
                 .login(username,password,"Username-Password-Authentication")
                 .validateClaims()

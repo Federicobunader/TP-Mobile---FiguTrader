@@ -23,7 +23,6 @@ class MenuPrincipalFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private var userId: String? = "userId"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,13 +44,10 @@ class MenuPrincipalFragment : Fragment() {
             override fun onResponse(call: Call<List<FiguritaResult>>?, response: Response<List<FiguritaResult>>) {
                 if (response.isSuccessful) {
                     val body = response.body()
-                    Log.v("retrofit", "call successful ${body?.size}")
                     progressBar.max = body?.size ?: 200
                     totalTextView.text = "${body?.size}"
                     AlbumDataset.album = body
                 }
-                else
-                    Log.v("retrofit", "call is not successful")
             }
             override fun onFailure(call: Call<List<FiguritaResult>>, t: Throwable) {
                 Log.v("retrofit", "call failed")
@@ -59,20 +55,15 @@ class MenuPrincipalFragment : Fragment() {
         })
 
         menuPrincipalViewModel.userIdData.observe(viewLifecycleOwner) {
-            Log.v("MenuPrincipalUserId", "$it")
-
             val albumUsuarioCall = AlbumClient.service.getAlbumUsuario(it.toString())
             albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
                 override fun onResponse(call: Call<List<FiguritaUsuarioResult>>?, response: Response<List<FiguritaUsuarioResult>>) {
                     if (response.isSuccessful) {
                         val body = response.body()
-                        Log.v("retrofit", "call successful ${body?.size}")
                         progressBar.progress = body?.size ?: 0
                         progressTextView.text = "${body?.size}"
                         AlbumDataset.albumUsuario = body
                     }
-                    else
-                        Log.v("retrofit", "call is not successful")
                 }
 
                 override fun onFailure(call: Call<List<FiguritaUsuarioResult>>, t: Throwable) {
@@ -82,7 +73,6 @@ class MenuPrincipalFragment : Fragment() {
         }
 
         menuPrincipalViewModel.userNameData.observe(viewLifecycleOwner) {
-            Log.v("MenuPrincipalUserName", "$it")
             albumName.text = it
         }
 

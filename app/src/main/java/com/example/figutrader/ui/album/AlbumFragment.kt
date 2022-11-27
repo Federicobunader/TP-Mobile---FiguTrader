@@ -12,13 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentAlbumBinding
-import com.example.figutrader.ui.edicion_figurita.EdicionFiguritaFragment
 import com.example.figutrader.ui.edicion_figurita.EdicionFiguritaViewModel
 
 class AlbumFragment : Fragment() {
 
     private var _binding: FragmentAlbumBinding? = null
-    private var _edicionFiguBinding: EdicionFiguritaFragment? = null
 
     private lateinit var recyclerView: RecyclerView
 
@@ -31,9 +29,6 @@ class AlbumFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val albumViewModel =
-            ViewModelProvider(this).get(AlbumViewModel::class.java)
-
         _binding = FragmentAlbumBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -68,10 +63,6 @@ class AlbumFragment : Fragment() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
-/*
-        binding.camButton.setOnClickListener {
-            findNavController().navigate(R.id.nav_scan)
-        }*/
     }
 
     override fun onDestroyView() {
