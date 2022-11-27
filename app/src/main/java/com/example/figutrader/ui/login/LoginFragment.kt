@@ -73,6 +73,7 @@ class LoginFragment : Fragment() {
                 cachedUserProfile = userProfile
                 menuPrincipalViewModel.setUsername(userProfile.name);
                 menuPrincipalViewModel.setUserId(userProfile.getId())
+                User.userID = userProfile.getId()
             }
         }
 

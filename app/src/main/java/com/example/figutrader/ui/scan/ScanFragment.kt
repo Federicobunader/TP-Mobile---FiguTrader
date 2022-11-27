@@ -37,14 +37,14 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-    private lateinit var cameraExecutor: ExecutorService
+    private var cameraExecutor: ExecutorService? = null
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
 
         // Shut down our background executor
-        cameraExecutor.shutdown()
+        cameraExecutor?.shutdown()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -65,9 +65,11 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         binding.buttonScan.setOnClickListener { cameraHandler.launchTakePictureIntent() }
 
-        objectDetectorHelper = ObjectDetectorHelper(
+        /*objectDetectorHelper = ObjectDetectorHelper(
             context = requireContext(),
             objectDetectorListener = this)
+
+         */
     }
 
     private fun setUpCamera() {
@@ -85,6 +87,7 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     private fun bindCameraUseCases() {
+        /*
         val cameraProvider =
             cameraProvider ?: throw IllegalStateException("Camera initialization failed.")
 
@@ -106,18 +109,20 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 .build()
 
                 .also {
-                    it.setAnalyzer(cameraExecutor) { image ->
-                        if (!::bitmapBuffer.isInitialized) {
-                            // The image rotation and RGB image buffer are initialized only once
-                            // the analyzer has started running
-                            bitmapBuffer = Bitmap.createBitmap(
-                                image.width,
-                                image.height,
-                                Bitmap.Config.ARGB_8888
-                            )
-                        }
+                    cameraExecutor?.let { it1 ->
+                        it.setAnalyzer(it1) { image ->
+                            if (!::bitmapBuffer.isInitialized) {
+                                // The image rotation and RGB image buffer are initialized only once
+                                // the analyzer has started running
+                                bitmapBuffer = Bitmap.createBitmap(
+                                    image.width,
+                                    image.height,
+                                    Bitmap.Config.ARGB_8888
+                                )
+                            }
 
-                        detectObjects(image)
+                            detectObjects(image)
+                        }
                     }
                 }
 
@@ -129,18 +134,22 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             preview?.setSurfaceProvider(binding.cameraPreview.surfaceProvider)
         } catch (exc: Exception) {
         }
+         */
     }
 
     private fun detectObjects(image: ImageProxy) {
+        /*
         image.use { bitmapBuffer.copyPixelsFromBuffer(image.planes[0].buffer) }
 
         val imageRotation = image.imageInfo.rotationDegrees
         objectDetectorHelper.detect(bitmapBuffer, imageRotation)
+
+         */
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        imageAnalyzer?.targetRotation = binding.cameraPreview.display.rotation
+        //imageAnalyzer?.targetRotation = binding.cameraPreview.display.rotation
     }
 
     private fun afterTakingPhoto(photoBitmap: Bitmap) {
@@ -148,9 +157,10 @@ class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     override fun onInitialized() {
-        objectDetectorHelper.setupObjectDetector()
+
+        //objectDetectorHelper.setupObjectDetector()
         // Initialize our background executor
-        cameraExecutor = Executors.newSingleThreadExecutor()
+        //cameraExecutor = Executors.newSingleThreadExecutor()
 
         // Wait for the views to be properly laid out
         binding.cameraPreview.post {

@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentAlbumBinding
-import com.example.figutrader.databinding.FragmentEdicionFiguBinding
 import com.example.figutrader.ui.edicion_figurita.EdicionFiguritaFragment
 import com.example.figutrader.ui.edicion_figurita.EdicionFiguritaViewModel
-import java.lang.Thread.sleep
 
 class AlbumFragment : Fragment() {
 

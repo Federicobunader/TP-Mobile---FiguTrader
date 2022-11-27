@@ -15,6 +15,7 @@ import com.auth0.android.authentication.AuthenticationAPIClient
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentEdicionFiguBinding
 import com.example.figutrader.ui.album.*
+import com.example.figutrader.ui.login.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -68,27 +69,45 @@ class EdicionFiguritaFragment : Fragment() {
             val nuevaCantidad : String = view.findViewById<EditText>(R.id.NuevaCantidadText).text.toString()
             Log.v("EdicionFiguritaFragment", "Click Boton cantidad")
 
-            val figuData = FiguritaUsuarioData(nuevaCantidad.toInt(), figuritaActual?.figuId ?: 0)
-            val albumUsuarioCall = AlbumClient.service.addFigurita(figuritaActual?.usuarioId ?: "migue", figuData)
+            if(nuevaCantidad != "") {
 
-            Log.v("EdicionFiguritaFragment", "UsuarioId: ${figuritaActual?.usuarioId ?: "migue"} FiguId: ${figuData.figuId}, cantidad: ${figuData.cantidad}")
+                val figuData =
+                    FiguritaUsuarioData(nuevaCantidad?.toInt(), figuritaActual?.figuId ?: 0)
+                var tokenUsuario: String?
 
-            albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
-                override fun onResponse(call: Call<List<FiguritaUsuarioResult>>?, response: Response<List<FiguritaUsuarioResult>>) {
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        Log.v("retrofit", "call POST successful ${body?.size}")
-                        nuevaCantidadText.text = ""
-                        cantidadText.text = figuData.cantidad.toString()
-                    }
-                    else
+                if (figuritaActual?.usuarioId != "") {
+                    tokenUsuario = figuritaActual?.usuarioId
+                } else {
+                    tokenUsuario = User.userID
+                }
+
+                val albumUsuarioCall = AlbumClient.service.addFigurita(tokenUsuario!!, figuData)
+
+                Log.v(
+                    "EdicionFiguritaFragment",
+                    "UsuarioId: ${figuritaActual?.usuarioId ?: "migue"} FiguId: ${figuData.figuId}, cantidad: ${figuData.cantidad}"
+                )
+
+                albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
+                    override fun onResponse(
+                        call: Call<List<FiguritaUsuarioResult>>?,
+                        response: Response<List<FiguritaUsuarioResult>>
+                    ) {
+                        if (response.isSuccessful) {
+                            val body = response.body()
+                            Log.v("retrofit", "call POST successful ${body?.size}")
+                            nuevaCantidadText.text = ""
+                            cantidadText.text = figuData.cantidad.toString()
+                        } else
+                            Log.i("Response", response.body().toString())
                         Log.v("retrofit", "call POST is not successful")
-                }
+                    }
 
-                override fun onFailure(call: Call<List<FiguritaUsuarioResult>>, t: Throwable) {
-                    Log.v("retrofit", "call POST failed")
-                }
-            })
+                    override fun onFailure(call: Call<List<FiguritaUsuarioResult>>, t: Throwable) {
+                        Log.v("retrofit", "call POST failed")
+                    }
+                })
+            }
         }
     }
 
