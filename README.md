@@ -10,7 +10,7 @@
 - Visualizar el progreso de compleción de tu álbum.
 
 ## Capturas
-![screen (1)](https://user-images.githubusercontent.com/37802800/204160355-e89b2887-7ed6-4edd-a926-b98db24e0fca.png) ![screen (2)](https://user-images.githubusercontent.com/37802800/204160403-04843a98-080b-47fa-bf45-fe1d3051392f.png) ![screen (3)](https://user-images.githubusercontent.com/37802800/204160407-2d3bd60e-3ae0-4a86-bd44-2fb0305fb093.png) ![screen (4)](https://user-images.githubusercontent.com/37802800/204160409-bc1bbe95-d00e-47fe-b574-aa2f2d1dedc3.png) ![screen (5)](https://user-images.githubusercontent.com/37802800/204160415-1f5f4661-821a-47a6-b181-23159a00d01a.png) ![screen 6](https://user-images.githubusercontent.com/37802800/204162620-8c19d8fe-4b2b-4482-af2f-eefc1d988701.png)
+![screen (1)](https://user-images.githubusercontent.com/37802800/204160355-e89b2887-7ed6-4edd-a926-b98db24e0fca.png) ![screen (2)](https://user-images.githubusercontent.com/37802800/204160403-04843a98-080b-47fa-bf45-fe1d3051392f.png) ![screen](https://user-images.githubusercontent.com/37802800/204382180-7e7a09dd-e800-41b7-946e-314e53f52cad.png) ![screen 2](https://user-images.githubusercontent.com/37802800/204382211-bb6d5509-62c8-4547-9976-357c3d413953.png) ![screen 3](https://user-images.githubusercontent.com/37802800/204382231-ea2e77bb-0981-4d8e-b1eb-aa7e89c201c1.png) ![screen 6](https://user-images.githubusercontent.com/37802800/204162620-8c19d8fe-4b2b-4482-af2f-eefc1d988701.png)
 
 
 ## Integrantes
