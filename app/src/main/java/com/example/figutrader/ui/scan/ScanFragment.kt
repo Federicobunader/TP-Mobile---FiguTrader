@@ -1,187 +1,167 @@
 package com.example.figutrader.ui.scan
 
 //import androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888
+
 import android.Manifest
+import android.R.attr.data
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.media.ThumbnailUtils
+import android.net.Uri
 import android.os.Bundle
-import android.os.StrictMode
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
-import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.activity.result.ActivityResult
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentScanBinding
+import com.example.figutrader.ml.FiguTraderModel
 import com.example.figutrader.ui.camera.CameraHandler
-import org.tensorflow.lite.examples.objectdetection.ObjectDetectorHelper
-import org.tensorflow.lite.task.gms.vision.detector.Detection
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 import java.nio.ByteBuffer
-import java.util.*
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.nio.ByteOrder
+import com.example.figutrader.model.AlbumDataset
+import com.example.figutrader.model.AlbumClient
+import com.example.figutrader.model.FiguritaUsuarioData
+import com.example.figutrader.model.FiguritaUsuarioResult
 
-class ScanFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
+
+class ScanFragment : Fragment() {
     private var _binding: FragmentScanBinding? = null
 
-    private val binding
-        get() = _binding!!
+    private val binding get() = _binding!!
 
-    private lateinit var objectDetectorHelper: ObjectDetectorHelper
-    private lateinit var bitmapBuffer: Bitmap
-    private var preview: Preview? = null
-    private var imageAnalyzer: ImageAnalysis? = null
-    private var camera: Camera? = null
-    private var cameraProvider: ProcessCameraProvider? = null
-    private var cameraExecutor: ExecutorService? = null
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-
-        // Shut down our background executor
-        cameraExecutor?.shutdown()
-    }
+    var imageSize = 32
+    var reqCode : Int = 0;
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentScanBinding.inflate(inflater, container, false)
-        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
 
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), 100);
+        var camera : Button = binding.buttonScan
+        var gallery : Button = binding.galleryButton
+
+
+        var cameraHandler = CameraHandler(::classifyImage, ::getImage, ::registerForActivityResult)
+
+        camera.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                reqCode = 3
+                cameraHandler.launchTakePictureIntent()
+            } else {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), 100);
+            }
+        }
+
+        gallery.setOnClickListener {
+            reqCode = 1
+            cameraHandler.launchPickPictureIntent()
+        }
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val cameraHandler = CameraHandler(::afterTakingPhoto, ::registerForActivityResult)
-
-        binding.buttonScan.setOnClickListener { cameraHandler.launchTakePictureIntent() }
-
-        /*objectDetectorHelper = ObjectDetectorHelper(
-            context = requireContext(),
-            objectDetectorListener = this)
-
-         */
-    }
-
-    private fun setUpCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        cameraProviderFuture.addListener(
-            {
-                // CameraProvider
-                cameraProvider = cameraProviderFuture.get()
-
-                // Build and bind the camera use cases
-                bindCameraUseCases()
-            },
-            ContextCompat.getMainExecutor(requireContext())
-        )
-    }
-
-    private fun bindCameraUseCases() {
-        /*
-        val cameraProvider =
-            cameraProvider ?: throw IllegalStateException("Camera initialization failed.")
-
-        val cameraSelector =
-            CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
-
-        preview =
-            Preview.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(binding.cameraPreview.display.rotation)
-                .build()
-
-        imageAnalyzer =
-            ImageAnalysis.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(binding.cameraPreview.display.rotation)
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                //.setOutputImageFormat(OUTPUT_IMAGE_FORMAT_RGBA_8888)
-                .build()
-
-                .also {
-                    cameraExecutor?.let { it1 ->
-                        it.setAnalyzer(it1) { image ->
-                            if (!::bitmapBuffer.isInitialized) {
-                                // The image rotation and RGB image buffer are initialized only once
-                                // the analyzer has started running
-                                bitmapBuffer = Bitmap.createBitmap(
-                                    image.width,
-                                    image.height,
-                                    Bitmap.Config.ARGB_8888
-                                )
-                            }
-
-                            detectObjects(image)
-                        }
-                    }
-                }
-
-        cameraProvider.unbindAll()
-
+    fun classifyImage(image: Bitmap) {
         try {
-            camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
+//            val model: Model = Model.newInstance(context)
+            val model = FiguTraderModel.newInstance(requireContext())
 
-            preview?.setSurfaceProvider(binding.cameraPreview.surfaceProvider)
-        } catch (exc: Exception) {
+            // Creates inputs for reference.
+            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 32, 32, 3), DataType.FLOAT32)
+            val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3)
+            byteBuffer.order(ByteOrder.nativeOrder())
+            inputFeature0.loadBuffer(byteBuffer)
+            val intValues = IntArray(imageSize * imageSize)
+            image.getPixels(intValues, 0, image.width, 0, 0, image.width, image.height)
+            var pixel = 0
+            //iterate over each pixel and extract R, G, and B values. Add those values individually to the byte buffer.
+            for (i in 0 until imageSize) {
+                for (j in 0 until imageSize) {
+                    val `val` = intValues[pixel++] // RGB
+                    byteBuffer.putFloat((`val` shr 16 and 0xFF) * (1f / 1))
+                    byteBuffer.putFloat((`val` shr 8 and 0xFF) * (1f / 1))
+                    byteBuffer.putFloat((`val` and 0xFF) * (1f / 1))
+                }
+            }
+            inputFeature0.loadBuffer(byteBuffer)
+
+            // Runs model inference and gets result.
+            val outputs = model.process(inputFeature0)
+            val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+            val confidences = outputFeature0.floatArray
+            // find the index of the class with the biggest confidence.
+            var maxPos = 0
+            var maxConfidence = 0f
+            for (i in confidences.indices) {
+                if (confidences[i] > maxConfidence) {
+                    maxConfidence = confidences[i]
+                    maxPos = i
+                }
+            }
+            val classes = arrayOf(linkedSetOf("10", "Angel Di Maria"), linkedSetOf("18", "Lautaro Martinez"), linkedSetOf("19", "Lionel Messi"))
+
+            cargarFigurita(classes[maxPos].elementAt(0), classes[maxPos].elementAt(1))
+
+            model.close()
+        } catch (e: IOException) {
+            // TODO Handle the exception
         }
-         */
     }
 
-    private fun detectObjects(image: ImageProxy) {
-        /*
-        image.use { bitmapBuffer.copyPixelsFromBuffer(image.planes[0].buffer) }
-
-        val imageRotation = image.imageInfo.rotationDegrees
-        objectDetectorHelper.detect(bitmapBuffer, imageRotation)
-
-         */
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        //imageAnalyzer?.targetRotation = binding.cameraPreview.display.rotation
-    }
-
-    private fun afterTakingPhoto(photoBitmap: Bitmap) {
-
-    }
-
-    override fun onInitialized() {
-
-        //objectDetectorHelper.setupObjectDetector()
-        // Initialize our background executor
-        //cameraExecutor = Executors.newSingleThreadExecutor()
-
-        // Wait for the views to be properly laid out
-        binding.cameraPreview.post {
-            // Set up the camera and its use cases
-            setUpCamera()
+    fun getImage(result : ActivityResult): Bitmap {
+        if (reqCode === 3) {
+            var image = result.data?.extras?.get("data") as Bitmap
+            val dimension = image.width.coerceAtMost(image.height)
+            image = ThumbnailUtils.extractThumbnail(image, dimension, dimension)
+            image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
+            return image
+        } else {
+            val dat: Uri? = result.data?.data
+            var image: Bitmap? = null
+            try {
+                image = MediaStore.Images.Media.getBitmap(context?.contentResolver, dat)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            image = Bitmap.createScaledBitmap(image!!, imageSize, imageSize, false)
+            return image
         }
     }
 
-    override fun onError(error: String) {
-        activity?.runOnUiThread {
-            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-        }
-    }
+    fun cargarFigurita(figuritaId : String, figuritaName : String) {
+        val figuData = FiguritaUsuarioData(1, figuritaId.toInt())
+        val albumUsuarioCall = AlbumClient.service.addFigurita(AlbumDataset.usuarioId!!, figuData)
+        albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
+            override fun onResponse(
+                call: Call<List<FiguritaUsuarioResult>>?,
+                response: Response<List<FiguritaUsuarioResult>>
+            ) {
+                if (response.isSuccessful) {
+                    findNavController().navigate(R.id.nav_menu_principal)
+                    Toast.makeText(context, "Se agregó con éxito a $figuritaName", Toast.LENGTH_SHORT).show()
+                }
+            }
 
-    override fun onResults(
-        results: MutableList<Detection>?,
-        inferenceTime: Long,
-        imageHeight: Int,
-        imageWidth: Int
-    ) {
+            override fun onFailure(call: Call<List<FiguritaUsuarioResult>>, t: Throwable) {
+                Log.v("retrofit", "call POST failed")
+            }
+        })
 
     }
 
 }
+
