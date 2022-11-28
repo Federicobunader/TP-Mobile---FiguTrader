@@ -12,6 +12,9 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         tools:layout_editor_absoluteX="191dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteY="0dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

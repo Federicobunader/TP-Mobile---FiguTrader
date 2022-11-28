@@ -1,4 +1,4 @@
-package com.example.figutrader.ui.album
+package com.example.figutrader.model
 
 data class FiguritaDataView(
     val descripcion: String,

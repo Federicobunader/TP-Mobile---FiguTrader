@@ -2,7 +2,7 @@ package com.example.figutrader.ui.edicion_figurita
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.figutrader.ui.album.FiguritaDataView
+import com.example.figutrader.model.FiguritaDataView
 
 
 class EdicionFiguritaViewModel() : ViewModel() {

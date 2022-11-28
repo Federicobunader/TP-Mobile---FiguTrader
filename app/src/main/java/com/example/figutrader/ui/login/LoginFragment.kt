@@ -19,6 +19,7 @@ import com.auth0.android.result.UserProfile
 import com.example.figutrader.MainActivity
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentLoginBinding
+import com.example.figutrader.model.AlbumDataset
 import com.example.figutrader.ui.menu_principal.MenuPrincipalViewModel
 
 class LoginFragment : Fragment() {
@@ -70,7 +71,7 @@ class LoginFragment : Fragment() {
             override fun onSuccess(userProfile: UserProfile) {
                 menuPrincipalViewModel.setUsername(userProfile.name);
                 menuPrincipalViewModel.setUserId(userProfile.getId())
-                User.userID = userProfile.getId()
+                AlbumDataset.usuarioId = userProfile.getId()
             }
         }
 

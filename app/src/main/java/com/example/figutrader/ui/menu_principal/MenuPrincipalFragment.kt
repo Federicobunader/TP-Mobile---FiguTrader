@@ -11,7 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentMenuPrincipalBinding
-import com.example.figutrader.ui.album.*
+import com.example.figutrader.model.AlbumClient
+import com.example.figutrader.model.AlbumDataset
+import com.example.figutrader.model.FiguritaResult
+import com.example.figutrader.model.FiguritaUsuarioResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,7 +62,7 @@ class MenuPrincipalFragment : Fragment() {
             albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
                 override fun onResponse(call: Call<List<FiguritaUsuarioResult>>?, response: Response<List<FiguritaUsuarioResult>>) {
                     if (response.isSuccessful) {
-                        val body = response.body()
+                        val body = response.body()?.filter { it.cantidad > 0 }
                         progressBar.progress = body?.size ?: 0
                         progressTextView.text = "${body?.size}"
                         AlbumDataset.albumUsuario = body

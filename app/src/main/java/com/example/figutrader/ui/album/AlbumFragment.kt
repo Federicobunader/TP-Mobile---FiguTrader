@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figutrader.R
 import com.example.figutrader.databinding.FragmentAlbumBinding
+import com.example.figutrader.model.AlbumDataset
+import com.example.figutrader.model.FiguritaDataView
 import com.example.figutrader.ui.edicion_figurita.EdicionFiguritaViewModel
 
 class AlbumFragment : Fragment() {
@@ -51,7 +54,7 @@ class AlbumFragment : Fragment() {
             ?: emptyList()
         val edicionFiguritaViewModel = ViewModelProvider(requireActivity()).get(EdicionFiguritaViewModel::class.java)
 
-        val viewManager = LinearLayoutManager(this.context)
+        val viewManager = GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false)
         val viewAdapter = FiguritasAdapter(this.context, albumDataset, object : FiguClickedListener{
             override fun onFiguClicked(figurita: FiguritaDataView) {
                 edicionFiguritaViewModel.setFigurita(figurita)
@@ -63,6 +66,7 @@ class AlbumFragment : Fragment() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
+        Log.v("AlbumFragment", "${AlbumDataset.album?.size}")
     }
 
     override fun onDestroyView() {

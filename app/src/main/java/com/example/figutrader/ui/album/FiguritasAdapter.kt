@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figutrader.R
+import com.example.figutrader.model.FiguritaDataView
 
 interface FiguClickedListener {
     fun onFiguClicked(figurita: FiguritaDataView)
@@ -39,8 +40,6 @@ class FiguritasAdapter(var context: Context?, var myDataset: List<FiguritaDataVi
         }
         else {
             val imagenName : String = "f" + myDataset[position].figuId.toString()
-            Log.v("FiguritasAdapter", imagenName)
-            Log.v("FiguritasAdapter", position.toString())
             holder.view.findViewById<TextView>(R.id.FiguTextView).text = ""
             holder.view.findViewById<TextView>(R.id.FiguTextView)
                 .setBackgroundResource(context!!.resources.getIdentifier(imagenName,"drawable", context!!.packageName))

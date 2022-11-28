@@ -1,4 +1,4 @@
-package com.example.figutrader.ui.album
+package com.example.figutrader.model
 
 import com.google.gson.annotations.SerializedName
 
