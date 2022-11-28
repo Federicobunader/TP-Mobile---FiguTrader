@@ -1,5 +1,7 @@
 package com.example.figutrader.ui.album
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +13,7 @@ interface FiguClickedListener {
     fun onFiguClicked(figurita: FiguritaDataView)
 }
 
-class FiguritasAdapter(var myDataset: List<FiguritaDataView>, val figuClickedListener: FiguClickedListener) :
+class FiguritasAdapter(var context: Context?, var myDataset: List<FiguritaDataView>, val figuClickedListener: FiguClickedListener) :
     RecyclerView.Adapter<FiguritasAdapter.MyViewHolder>() {
 
     class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view)
@@ -27,19 +29,21 @@ class FiguritasAdapter(var myDataset: List<FiguritaDataView>, val figuClickedLis
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.view.findViewById<TextView>(R.id.figurita_nombre).text =
-            myDataset[position].descripcion
-
         holder.view.findViewById<TextView>(R.id.CantidadTextView).text =
             myDataset[position].cantidad.toString()
 
         if (myDataset[position].cantidad == 0) {
-            holder.view.findViewById<TextView>(R.id.figurita_nombre)
-                .setBackgroundResource(R.color.gris_figurita)
+            holder.view.findViewById<TextView>(R.id.FiguTextView)
+                .setBackgroundResource(R.drawable.figurita)
+            holder.view.findViewById<TextView>(R.id.FiguTextView).text = myDataset[position].descripcion
         }
         else {
-            holder.view.findViewById<TextView>(R.id.figurita_nombre)
-                .setBackgroundResource(R.color.verde_figurita)
+            val imagenName : String = "f" + myDataset[position].figuId.toString()
+            Log.v("FiguritasAdapter", imagenName)
+            Log.v("FiguritasAdapter", position.toString())
+            holder.view.findViewById<TextView>(R.id.FiguTextView).text = ""
+            holder.view.findViewById<TextView>(R.id.FiguTextView)
+                .setBackgroundResource(context!!.resources.getIdentifier(imagenName,"drawable", context!!.packageName))
         }
 
         holder.itemView.setOnClickListener{ figuClickedListener.onFiguClicked(myDataset[position])}

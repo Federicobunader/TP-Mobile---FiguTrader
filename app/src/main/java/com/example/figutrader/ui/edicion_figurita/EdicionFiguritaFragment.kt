@@ -45,12 +45,14 @@ class EdicionFiguritaFragment : Fragment() {
         val edicionFiguritaViewModel = ViewModelProvider(requireActivity()).get(EdicionFiguritaViewModel::class.java)
 
         val cantidadText: TextView = binding.CantidadTextView
-        val nombreText: TextView = binding.figuritaNombre
+        val descripcionText: TextView = binding.DescripcionTextView
         val nuevaCantidadText: TextView = binding.NuevaCantidadText
+        val categoriaText : TextView = binding.CategoriaTextView
 
         edicionFiguritaViewModel.figuritasData.observe(viewLifecycleOwner) {
             cantidadText.text = it.cantidad.toString()
-            nombreText.text = it.descripcion
+            descripcionText.text = it.descripcion
+            categoriaText.text = it.categoria
             figuritaActual = it
         }
 
@@ -58,9 +60,7 @@ class EdicionFiguritaFragment : Fragment() {
             val nuevaCantidad : String = view.findViewById<EditText>(R.id.NuevaCantidadText).text.toString()
 
             if(nuevaCantidad != "") {
-
-                val figuData =
-                    FiguritaUsuarioData(nuevaCantidad.toInt(), figuritaActual?.figuId ?: 0)
+                val figuData = FiguritaUsuarioData(nuevaCantidad.toInt(), figuritaActual?.figuId ?: 0)
 
                 val tokenUsuario: String? = if (figuritaActual?.usuarioId != "") {
                     figuritaActual?.usuarioId

@@ -7,21 +7,19 @@
     tools:context=".ui.edicion_figurita.EdicionFiguritaFragment">
 
     <TextView
-        android:id="@+id/figurita_nombre"
-        android:layout_width="300dp"
-        android:layout_height="464dp"
+        android:id="@+id/FiguTextView"
+        android:layout_width="286dp"
+        android:layout_height="363dp"
         android:layout_weight="1"
-        android:background="@color/verde_figurita"
+        android:background="@drawable/figurita"
         android:gravity="center"
-        android:text="Fede"
         android:textAlignment="center"
         android:textFontWeight="900"
-        android:textSize="50px"
         app:layout_constraintBottom_toTopOf="@+id/NuevaCantidadText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/CategoriaTextView" />
 
     <TextView
         android:id="@+id/CantidadTextView"
@@ -37,8 +35,8 @@
         android:text="0"
         android:textAlignment="center"
         android:textSize="50px"
-        app:layout_constraintStart_toStartOf="@+id/figurita_nombre"
-        app:layout_constraintTop_toTopOf="@+id/figurita_nombre" />
+        app:layout_constraintStart_toStartOf="@+id/FiguTextView"
+        app:layout_constraintTop_toTopOf="@+id/FiguTextView" />
 
     <EditText
         android:id="@+id/NuevaCantidadText"
@@ -63,5 +61,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/CategoriaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="15dp"
+        android:text="Pais"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/FiguTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/DescripcionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Jugador 1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CategoriaTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

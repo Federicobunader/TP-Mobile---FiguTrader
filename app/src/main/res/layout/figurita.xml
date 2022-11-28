@@ -7,16 +7,17 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/figurita_nombre"
+        android:id="@+id/FiguTextView"
         android:layout_width="match_parent"
-        android:layout_height="1000px"
+        android:layout_height="1200px"
         android:layout_weight="1"
+        android:background="@color/verde_figurita"
         android:gravity="center"
         android:text="Fede"
         android:textAlignment="center"
         android:textFontWeight="900"
-        android:textSize="50px"
-        android:background="@color/verde_figurita"/>
+        android:textColor="@color/white"
+        android:textSize="50px" />
 
     <TextView
         android:id="@+id/CantidadTextView"
