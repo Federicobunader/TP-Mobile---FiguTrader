@@ -77,7 +77,6 @@ class ScanFragment : Fragment() {
 
     fun classifyImage(image: Bitmap) {
         try {
-//            val model: Model = Model.newInstance(context)
             val model = FiguTraderModel.newInstance(requireContext())
 
             // Creates inputs for reference.
@@ -112,13 +111,22 @@ class ScanFragment : Fragment() {
                     maxPos = i
                 }
             }
-            val classes = arrayOf(linkedSetOf("10", "Angel Di Maria"), linkedSetOf("18", "Lautaro Martinez"), linkedSetOf("19", "Lionel Messi"))
+            Log.v("ScanFragment", maxConfidence.toString())
+            if(maxConfidence > 0.70) {
+                val classes = arrayOf(
+                    linkedSetOf("10", "Angel Di Maria"),
+                    linkedSetOf("18", "Lautaro Martinez"),
+                    linkedSetOf("19", "Lionel Messi")
+                )
 
-            cargarFigurita(classes[maxPos].elementAt(0), classes[maxPos].elementAt(1))
-
+                cargarFigurita(classes[maxPos].elementAt(0), classes[maxPos].elementAt(1))
+            }
+            else{
+                Toast.makeText(context, "VAR: No se reconoció una figurita", Toast.LENGTH_SHORT).show()
+            }
             model.close()
         } catch (e: IOException) {
-            // TODO Handle the exception
+            Log.v("ScanFragment", e.message.toString())
         }
     }
 
@@ -154,10 +162,13 @@ class ScanFragment : Fragment() {
                     findNavController().navigate(R.id.nav_menu_principal)
                     Toast.makeText(context, "Se agregó con éxito a $figuritaName", Toast.LENGTH_SHORT).show()
                 }
+                else
+                    Toast.makeText(context, "No se pudo guardar tu figurita de $figuritaName", Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(call: Call<List<FiguritaUsuarioResult>>, t: Throwable) {
                 Log.v("retrofit", "call POST failed")
+                Toast.makeText(context, "No se pudo guardar tu figurita de $figuritaName", Toast.LENGTH_SHORT).show()
             }
         })
 
