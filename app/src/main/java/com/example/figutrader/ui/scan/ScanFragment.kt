@@ -151,7 +151,10 @@ class ScanFragment : Fragment() {
     }
 
     fun cargarFigurita(figuritaId : String, figuritaName : String) {
-        val figuData = FiguritaUsuarioData(1, figuritaId.toInt())
+        val figuId = figuritaId.toInt()
+        val viejaCantidad : Int = (AlbumDataset.albumUsuario?.find { it.figuId == figuId }?.cantidad) ?: 0
+        val nuevaCantidad = viejaCantidad + 1
+        val figuData = FiguritaUsuarioData(nuevaCantidad, figuId)
         val albumUsuarioCall = AlbumClient.service.addFigurita(AlbumDataset.usuarioId!!, figuData)
         albumUsuarioCall.enqueue(object : Callback<List<FiguritaUsuarioResult>> {
             override fun onResponse(
